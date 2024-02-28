@@ -27,15 +27,35 @@ npm start
 ## Configuración de la Base de Datos
 Asegúrate de tener una base de datos MySQL con una tabla llamada entries. Puedes usar el siguiente SQL para crearla:
 
+1. Crear la base de datos.
 ```sql
-CREATE TABLE entries (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    title VARCHAR(255) NOT NULL,
-    author VARCHAR(255) NOT NULL,
-    content TEXT NOT NULL,
-    publish_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
+CREATE DATABASE IF NOT EXISTS `blog_db` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci */;
+USE `blog_db`;
 ```
+2. Crear la tabla de entradas.
+```sql
+CREATE TABLE IF NOT EXISTS `entries` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `title` varchar(255) NOT NULL,
+  `author` varchar(255) NOT NULL,
+  `publish_date` date NOT NULL DEFAULT curdate(),
+  `content` text NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+```
+3. Insertar registros de prueba para visualización en sistema (Estos registros son solo para prueba de funcionamiento).
+```sql
+INSERT INTO `entries` (`id`, `title`, `author`, `publish_date`, `content`) VALUES
+	(1, 'Entrada 1', 'Isvi Lerma', '2022-03-01', 'Uno  Uno  Uno  Uno  Uno  Uno  Uno  Uno  Uno  Uno Uno  Uno  Uno  Uno  Uno  Uno  Uno  Uno  Uno  Uno '),
+	(2, 'Entrada 2', 'Mizraim Rosas', '2022-03-02', 'Dos Dos Dos Dos Dos Dos Dos Dos Dos Dos Dos Dos Dos Dos Dos Dos Dos Dos Dos Dos '),
+	(3, 'Entrada 3', 'Lorem', '2022-03-03', 'Tres Tres Tres Tres Tres Tres Tres Tres Tres Tres Tres Tres Tres Tres Tres Tres Tres Tres Tres Tres '),
+	(4, 'Entrada 4', 'Steve Jobs', '2022-03-03', 'Cuatro Cuatro Cuatro Cuatro Cuatro Cuatro Cuatro Cuatro Cuatro Cuatro Cuatro Cuatro Cuatro Cuatro '),
+	(7, 'Entrada 5', 'Bill', '2024-02-28', 'Cinco Cinco Cinco Cinco Cinco Cinco Cinco Cinco Cinco Cinco Cinco Cinco Cinco Cinco Cinco Cinco '),
+	(9, 'Entrada 6', 'Mark', '2024-02-28', 'Seis Seis Seis Seis Seis Seis Seis Seis Seis Seis Seis Seis Seis Seis Seis Seis Seis Seis Seis Seis Seis ');
+```
+
+## Importar base de datos
+Para una importación rápida de la base de datos, es posible descargar el archivo el cual contiene el script necesario en la carpeta "database".
 
 ## Endpoints
 ```bash
