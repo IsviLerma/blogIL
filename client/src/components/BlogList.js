@@ -9,7 +9,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
 
-const BlogList = () => {
+const BlogList = ({ offlineEntries = [], updateOfflineEntries }) => {
     const [entries, setEntries] = useState([]);
     const [searchQuery, setSearchQuery] = useState('');
     const [searchQuery1, setSearchQuery1] = useState('');
@@ -24,8 +24,14 @@ const BlogList = () => {
     });
 
     useEffect(() => {
-        fetchEntries();
-    }, [searchQuery, searchQuery1, searchQuery2, searchQuery3, advancedSearch]);
+        // Si estamos en modo offline, usamos las entradas offline
+        if (offlineEntries.length > 0) {
+            setEntries(offlineEntries);
+        } else {
+            // En modo online, llamamos a la función fetchEntries
+            fetchEntries();
+        }
+    }, [searchQuery, searchQuery1, searchQuery2, searchQuery3, advancedSearch, offlineEntries]);
 
     const fetchEntries = async () => {
         try {
@@ -34,11 +40,22 @@ const BlogList = () => {
                 : { title: searchQuery };
 
             const response = await axios.get('http://localhost:3001/entries', { params });
-
             setEntries(response.data);
         } catch (error) {
             console.error('Error al obtener las entradas:', error);
         }
+    };
+
+    const searchOfflineEntries = () => {
+        const filteredEntries = offlineEntries.filter(entry => {
+            const titleMatch = entry.title.toLowerCase().includes(searchQuery.toLowerCase());
+            const contentMatch = entry.content.toLowerCase().includes(searchQuery.toLowerCase());
+            const authorMatch = entry.author.toLowerCase().includes(searchQuery.toLowerCase());
+
+            return titleMatch || contentMatch || authorMatch;
+        });
+
+        setEntries(filteredEntries);
     };
 
     const fetchData = async () => {
@@ -61,7 +78,13 @@ const BlogList = () => {
     };
 
     const handleSearch = () => {
-        fetchData();
+        if (offlineEntries.length > 0) {
+            // Si estamos en modo offline, llamamos a la función searchOfflineEntries
+            searchOfflineEntries();
+        } else {
+            // En modo online, llamamos a la función fetchEntries
+            fetchEntries();
+        }
     };
 
     const handleSearchInputChange = (e, field) => {
