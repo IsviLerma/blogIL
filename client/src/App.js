@@ -16,7 +16,6 @@ const App = () => {
     window.addEventListener('online', handleOnlineStatus);
     window.addEventListener('offline', handleOnlineStatus);
 
-    // Al cargar la aplicación, intenta obtener las entradas almacenadas localmente
     const storedEntries = JSON.parse(localStorage.getItem('offlineEntries')) || [];
     setOfflineEntries(storedEntries);
 
@@ -26,7 +25,6 @@ const App = () => {
     };
   }, []);
 
-  // Función para actualizar las entradas almacenadas localmente
   const updateOfflineEntries = (entries) => {
     localStorage.setItem('offlineEntries', JSON.stringify(entries));
     setOfflineEntries(entries);
@@ -35,13 +33,11 @@ const App = () => {
   return (
     <div>
       {online ? (
-        // Mostrar la lista de entradas y permitir agregar nuevas entradas
         <BlogList
           offlineEntries={offlineEntries}
           updateOfflineEntries={updateOfflineEntries}
         />
       ) : (
-        // Mostrar las entradas almacenadas localmente cuando esté offline
         <div>
           <h1>No tienes conexión a internet</h1>
           <BlogList entries={offlineEntries} />

@@ -24,11 +24,9 @@ const BlogList = ({ offlineEntries = [], updateOfflineEntries }) => {
     });
 
     useEffect(() => {
-        // Si estamos en modo offline, usamos las entradas offline
         if (offlineEntries.length > 0) {
             setEntries(offlineEntries);
         } else {
-            // En modo online, llamamos a la función fetchEntries
             fetchEntries();
         }
     }, [searchQuery, searchQuery1, searchQuery2, searchQuery3, advancedSearch, offlineEntries]);
@@ -79,10 +77,8 @@ const BlogList = ({ offlineEntries = [], updateOfflineEntries }) => {
 
     const handleSearch = () => {
         if (offlineEntries.length > 0) {
-            // Si estamos en modo offline, llamamos a la función searchOfflineEntries
             searchOfflineEntries();
         } else {
-            // En modo online, llamamos a la función fetchEntries
             fetchEntries();
         }
     };
